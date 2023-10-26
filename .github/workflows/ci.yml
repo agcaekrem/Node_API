@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:12
+        env:
+          POSTGRES_USER: api_user
+          POSTGRES_PASSWORD: root
+          POSTGRES_DB: foodie
+        ports:
+          - 5432:5432
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Build Docker image
+      run: docker build . -t myapp
+
+    - name: Test
+      run: |
+        docker run -d --name myapp-container -e DB_HOST=postgres myapp
+        # Burada gerektiğinde test komutlarınızı ekleyebilirsiniz, örneğin:
+        # docker exec myapp-container npm test
+
+    - name: Push to Docker Hub
+      run: |
+        echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+        docker tag myapp ${{ secrets.DOCKERHUB_USERNAME }}/myapp:latest
+        docker push ${{ secrets.DOCKERHUB_USERNAME }}/myapp:latest
