@@ -1,0 +1,25 @@
+version: '3'
+services:
+  api:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      DB_USER: api_user
+      DATABASE_PASSWORD: root
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_DATABASE: foodie
+    depends_on:
+      - db
+  db:
+    image: postgres:12
+    environment:
+      POSTGRES_USER: api_user
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: foodie
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+volumes:
+  pgdata:
