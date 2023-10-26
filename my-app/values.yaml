@@ -1,0 +1,15 @@
+app:
+  image:
+    repository: ekremagca/myapp
+    tag: latest
+  service:
+    type: NodePort
+    port: 3000
+
+postgres:
+  image:
+    repository: postgres
+    tag: 12
+  user: api_user
+  password: root
+  database: foodie
