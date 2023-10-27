@@ -32,7 +32,6 @@ jobs:
     - name: Test
       run: |
         docker run -d --name myapp-container -e DB_HOST=postgres myapp
-        # Burada gerektiğinde test komutlarınızı ekleyebilirsiniz, örneğin:
         # docker exec myapp-container npm test
 
     - name: Push to Docker Hub
