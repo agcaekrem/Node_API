@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nodeapp
+spec:
+  destination:
+    name: ''
+    namespace: webapp
+    server: 'https://kubernetes.default.svc'
+  source:
+    path: ./my-app
+    repoURL: 'https://github.com/agcaekrem/Node_API.git'
+    targetRevision: HEAD
+    directory:
+      recurse: true
+  sources: []
+  project: default
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: false
